@@ -1,0 +1,27 @@
+---
+
+- name: Check if Anaconda is installed
+  stat:
+   path: /opt/anaconda/bin/conda
+  register: conda_result
+
+
+- name: Download Anaconda
+  get_url:
+    url: https://repo.continuum.io/archive/Anaconda3-4.3.1-Linux-x86_64.sh
+    dest: /home/{{ansible_user}}/Anaconda3-4.3.1-Linux-x86_64.sh
+  when: conda_result.stat.exists == false
+
+- name: Install Anaconda
+  shell: >
+   bash Anaconda3-4.3.1-Linux-x86_64.sh -b -p /opt/anaconda
+  become: true
+  when: conda_result.stat.exists == false
+
+- name: Add Anaconda to ect/profile.d
+  shell: >
+    touch /etc/profile.d/anaconda.sh
+    && echo "PATH=$PATH:/opt/anaconda/bin" | sudo tee /etc/profile.d/anaconda.sh
+  become: true
+  when: conda_result.stat.exists == false
+...

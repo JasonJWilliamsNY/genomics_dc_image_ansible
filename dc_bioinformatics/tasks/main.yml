@@ -1,0 +1,67 @@
+# install tools needed for dc genomics image
+
+---
+- name: Install libncurses5-dev and libbz2-dev libraries for samtools/bcftools/IGV and install bwa, IGV
+  apt:
+    name: "{{ item }}"
+    state: present
+    install_recommends: yes
+  with_items:
+    - libbz2-dev
+    - libncurses5-dev
+    - liblzma-dev
+    - default-jre
+    - default-jdk
+    - bwa
+    - igv
+
+- name: Check if samtools is installed in /usr/bin/samtools
+  stat:
+    path: /usr/bin/samtools
+  register: samtools_result
+  failed_when: samtools_result.stat.exists == false
+  ignore_errors: true
+
+- name: Download samtools
+  unarchive:
+    src: https://github.com/samtools/samtools/releases/download/1.5/samtools-1.5.tar.bz2
+    dest: /opt/
+    remote_src: True
+  become: true
+  when: samtools_result.stat.exists == false
+
+- name: configure, make, and install samtools
+  shell: cd /opt/samtools-1.5 && ./configure --prefix=/usr/ && make && make install
+  become: true
+  when: samtools_result.stat.exists == false
+
+- name: Check if bcftools is installed in /usr/bin/bcftools
+  stat:
+    path: /usr/bin/bcftools
+  register: bcftools_result
+  failed_when: bcftools_result.stat.exists == false
+  ignore_errors: true
+
+- name: Download bcftools
+  unarchive:
+    src: https://github.com/samtools/bcftools/releases/download/1.5/bcftools-1.5.tar.bz2
+    dest: /opt/
+    remote_src: true
+  become: true
+  when: bcftools_result.stat.exists == false
+
+- name: configure, make, and install bcftools
+  shell: cd /opt/bcftools-1.5 && ./configure --prefix=/usr/ && make && make install
+  become: true
+  when: bcftools_result.stat.exists == false
+
+- copy:
+    src: ../files/vcfutils.pl
+    dest: /usr/share/samtools/
+  become: true
+
+- file:
+    path: /usr/share/samtools/vcfutils.pl
+    mode: 0777
+  become: true
+...

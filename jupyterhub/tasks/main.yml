@@ -1,0 +1,56 @@
+---
+
+- name: Check if conda is available and in /opt/anaconda
+  stat:
+    path: /opt/anaconda/bin/conda
+  register: conda_result
+  failed_when: conda_result.stat.exists == false
+
+- name: check if jupyterhub is installed
+  stat:
+   path: /opt/anaconda/bin/jupyterhub
+  register: jupyterhub_result
+  failed_when:  jupyterhub_result.stat.exists == true
+  ignore_errors: true
+
+- name: Install jupyterhub with conda
+  shell: /opt/anaconda/bin/conda install -c conda-forge jupyterhub
+  become: true
+  when: jupyterhub_result.stat.exists == false
+
+- name: Upload service settings to run on boot
+  copy:
+    src: /etc/ansible/roles/jupyterhub/files/jupyterhub.service
+    dest: /etc/systemd/system/
+    owner: root
+    group: root
+    mode: 0777
+  when: jupyterhub_result.stat.exists == false
+
+- name: Upload service script to run on boot
+  copy:
+    src: /etc/ansible/roles/jupyterhub/files/jupyterhub
+    dest: /etc/init.d
+    owner: root
+    group: root
+    mode: 0777
+  when: jupyterhub_result.stat.exists == false
+
+- name: generate config file
+  shell: >
+   mkdir /etc/jupyterhub
+   &&
+   /opt/anaconda/bin/jupyterhub --generate-config
+   &&
+   mv jupyterhub_config.py /etc/jupyterhub/
+  when: jupyterhub_result.stat.exists == false
+
+- name: generate config file
+  command: service jupyterhub start
+  become: true
+
+- name: enable service start at boot
+  shell: systemctl enable jupyterhub.service
+  become: true
+  when: jupyterhub_result.stat.exists == false
+...

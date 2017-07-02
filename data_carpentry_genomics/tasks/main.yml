@@ -1,0 +1,22 @@
+---
+# create the dcuser
+
+- user:
+    name: dcuser
+    password: '$6$KCChtaV22C0YBezQ$p70otYgkmE4PgMj2.7.CuIXBD8q.qRsZN5JqdyeYlYS2KIofi46l77CSPW.cFPL97XXRfAuQw4s6qofGJghoG.'
+    createhome: yes
+    shell: /bin/bash
+    system: no
+    groups: "root"
+
+- name: Upload new bashrc
+  copy:
+    src: /etc/ansible/roles/data_carpentry_genomics/files/.bashrc
+    dest: /home/dcuser
+
+- name: Upload new profile
+  copy:
+    src: /etc/ansible/roles/data_carpentry_genomics/files/.profile
+    dest: /home/dcuser
+
+...

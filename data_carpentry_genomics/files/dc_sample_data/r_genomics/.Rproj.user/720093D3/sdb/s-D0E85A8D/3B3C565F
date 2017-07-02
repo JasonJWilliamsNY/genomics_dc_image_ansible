@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1463859006348.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "3B3C565F",
+    "lastKnownWriteTime" : 1463859022,
+    "last_content_update" : 1463859022736,
+    "path" : "~/dc_sample_data/r_genomics/data-carpentry-script.R",
+    "project_path" : "data-carpentry-script.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
