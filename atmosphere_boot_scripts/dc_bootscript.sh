@@ -36,9 +36,9 @@ copy_dc_home_datasets ()
 {
   # Performs an irsync command to copy a test dataset folder to $ATMO_USER
   # desktop
-  irsync -rs i:/iplant/home/shared/cyverse_training/workshop_materials/genomics_data_carpentry/dcuser_home/  /scratch >/var/log/williams_bootscript.log 2>&1
-  irsync -rs i:/iplant/home/shared/cyverse_training/workshop_materials/genomics_data_carpentry/.dc_sampledata_lite   /scratch  >/var/log/williams_bootscript.log 2>&1
+  irsync -rs i:/iplant/home/shared/cyverse_training/workshop_materials/genomics_data_carpentry_1_0_release/ /scratch >/var/log/williams_bootscript.log 2>&1
   chown -R dcuser /scratch
+  cp -rs /scratch/* /home/dcuser
   chown -R dcuser /home/dcuser
 
 
