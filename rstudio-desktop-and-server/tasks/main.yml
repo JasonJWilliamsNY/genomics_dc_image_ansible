@@ -76,12 +76,12 @@
       with_items:
         - tidyverse
 
-    - name: Install BioConductor packages (cummeRbund)
-      command: >
-          Rscript --slave --no-save --no-restore-history -e "if (! ('{{ item }}' %in% installed.packages()[,'Package'])) { source('https://bioconductor.org/biocLite.R'); biocLite('{{ item }}'); print('Added'); } else { print('Already installed'); }"
-      register: b_result
-      failed_when: "b_result.rc != 0 or 'had non-zero exit status' in b_result.stderr"
-      changed_when: "'Added' in b_result.stdout"
-      with_items:
-        - cummeRbund
+  #  - name: Install BioConductor packages (cummeRbund)
+  #    command: >
+  #        Rscript --slave --no-save --no-restore-history -e "if (! ('{{ item }}' %in% installed.packages()[,'Package'])) { source('https://bioconductor.org/biocLite.R'); biocLite('{{ item }}'); print('Added'); } else { print('Already installed'); }"
+  #    register: b_result
+  #    failed_when: "b_result.rc != 0 or 'had non-zero exit status' in b_result.stderr"
+  #    changed_when: "'Added' in b_result.stdout"
+  #    with_items:
+  #      - cummeRbund
 ...
