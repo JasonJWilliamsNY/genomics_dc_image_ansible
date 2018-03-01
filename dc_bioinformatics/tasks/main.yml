@@ -24,14 +24,14 @@
 
 - name: Download samtools
   unarchive:
-    src: https://github.com/samtools/samtools/releases/download/1.5/samtools-1.5.tar.bz2
+    src: https://github.com/samtools/samtools/releases/download/1.3/samtools-1.3.tar.bz2
     dest: /opt/
     remote_src: True
   become: true
   when: samtools_result.stat.exists == false
 
 - name: configure, make, and install samtools
-  shell: cd /opt/samtools-1.5 && ./configure --prefix=/usr/ && make && make install
+  shell: cd /opt/samtools-1.3 && ./configure --prefix=/usr/ && make && make install
   become: true
   when: samtools_result.stat.exists == false
 
